@@ -1,26 +1,36 @@
 import * as React from 'react';
-export default class Map extends React.Component {
-  componentDidMount() {
-    this.map = new mapboxgl.Map({
-      container: this.mapContainer,
-      style: 'mapbox://styles/mapbox/streets-v9'
-    });
-  }
+import ReactMapGL from 'react-map-gl';
 
-  componentWillUnmount() {
-    this.map.remove();
-  }
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN || '';
+const initialState = {
+    viewport: {
+        height: 400,
+        latitude: 37.7577,
+        longitude: -122.4376,
+        width: 400,
+        zoom: 8,
+    },
+};
+type State = typeof initialState;
+type Viewport = typeof initialState.viewport;
 
-  render() {
-    const style {
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      width: '100%'
+export default class Map extends React.Component<object, State> {
+    public state: State = initialState;
+
+    public onViewportChange = (viewport: Viewport) => {
+        this.setState(prevState => ({
+            viewport: { ...prevState.viewport, ...viewport },
+        }));
     };
 
-    return <div style={style} ref={el => this.mapContainer = el} />;
-  }
+    public render() {
+        const { viewport } = this.state;
+        return (
+            <ReactMapGL
+                {...viewport}
+                mapboxApiAccessToken={MAPBOX_TOKEN}
+                onViewportChange={(v: Viewport) => this.onViewportChange(v)}
+            />
+        );
+    }
 }
-
-ReactDOM.render(<Map />, document.getElementById('app'));  

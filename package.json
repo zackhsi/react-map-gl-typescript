@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-map-gl": "^3.3.0",
     "react-scripts-ts": "2.16.0"
   },
   "scripts": {
@@ -14,10 +15,12 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
+    "@types/dotenv": "^4.0.3",
     "@types/jest": "^23.1.4",
     "@types/node": "^10.5.2",
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
+    "@types/react-map-gl": "^3.2.2",
     "typescript": "^2.9.2"
   }
 }
