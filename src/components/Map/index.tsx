@@ -5,21 +5,40 @@ const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN || '';
 const initialState = {
     viewport: {
         height: 400,
-        latitude: 37.7577,
-        longitude: -122.4376,
+        latitude: 37.776021,
+        longitude: -122.4171949,
         width: 400,
-        zoom: 8,
+        zoom: 14,
     },
 };
 type State = typeof initialState;
 type Viewport = typeof initialState.viewport;
 
-export default class Map extends React.Component<object, State> {
+export default class Map extends React.Component<{}, State> {
     public state: State = initialState;
+
+    public componentDidMount() {
+        window.addEventListener('resize', this.resize);
+        this.resize();
+    }
+
+    public componentWillUnmount() {
+        window.removeEventListener('resize', this.resize);
+    }
 
     public onViewportChange = (viewport: Viewport) => {
         this.setState(prevState => ({
             viewport: { ...prevState.viewport, ...viewport },
+        }));
+    };
+
+    public resize = () => {
+        this.setState(prevState => ({
+            viewport: {
+                ...prevState.viewport,
+                height: window.innerHeight,
+                width: window.innerWidth,
+            },
         }));
     };
 
