@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, { NavigationControl } from 'react-map-gl';
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN || '';
 const initialState = {
@@ -26,7 +26,7 @@ export default class Map extends React.Component<{}, State> {
         window.removeEventListener('resize', this.resize);
     }
 
-    public onViewportChange = (viewport: Viewport) => {
+    public updateViewport = (viewport: Viewport) => {
         this.setState(prevState => ({
             viewport: { ...prevState.viewport, ...viewport },
         }));
@@ -48,8 +48,12 @@ export default class Map extends React.Component<{}, State> {
             <ReactMapGL
                 {...viewport}
                 mapboxApiAccessToken={MAPBOX_TOKEN}
-                onViewportChange={(v: Viewport) => this.onViewportChange(v)}
-            />
+                onViewportChange={(v: Viewport) => this.updateViewport(v)}
+            >
+                <div style={{ position: 'absolute', right: 30, bottom: 30 }}>
+                    <NavigationControl onViewportChange={this.updateViewport} />
+                </div>
+            </ReactMapGL>
         );
     }
 }
